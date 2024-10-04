@@ -12,7 +12,6 @@ use App\Controller\UserCreateAction;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
