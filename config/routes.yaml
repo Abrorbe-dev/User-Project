@@ -3,3 +3,8 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+api_users_auth:
+    path: /api/users/auth
+    controller: App\Controller\UserController::auth
+    methods: [GET, POST, PUT, DELETE]
