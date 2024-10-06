@@ -21,9 +21,14 @@ use Symfony\Component\Serializer\Attribute\Groups;
     operations: [
         new GetCollection(),
         new Post(
-            uriTemplate: 'users/my',
+            uriTemplate: 'users/create',
             controller: UserCreateAction::class,
             name: 'createUser'
+        ),
+        new Post(
+            uriTemplate: 'users/auth',
+            denormalizationContext: [['groups' => 'user:auth']],
+            name: 'auth'
         ),
         new Get(),
         new Put(),
@@ -41,11 +46,11 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:write'])]
+    #[Groups(['user:read', 'user:write', 'user:auth'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:write'])]
+    #[Groups(['user:write', 'user:auth'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -63,18 +68,6 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
     }
 
     public function getPassword(): ?string
@@ -137,5 +130,17 @@ class User implements PasswordAuthenticatedUserInterface, UserInterface
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }
